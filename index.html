@@ -19,28 +19,17 @@ body{
 .navbar{
     display:flex;
     justify-content:space-between;
-    align-items:center;
     padding:15px 40px;
     background:#000;
+    align-items:center;
 }
 
-.logo{
-    font-size:22px;
-    font-weight:700;
-}
-
-/* BUTTON */
 button{
-    padding:6px 12px;
     background:#00ffcc;
     border:none;
+    padding:6px 12px;
     cursor:pointer;
     border-radius:4px;
-}
-
-/* HERO */
-.hero{
-    padding:60px;
 }
 
 /* GRID */
@@ -60,7 +49,6 @@ button{
 
 .card:hover{
     transform:scale(1.05);
-    box-shadow:0 0 20px rgba(0,255,200,0.5);
 }
 
 .card img{
@@ -73,8 +61,8 @@ button{
     padding:15px;
 }
 
-/* LOGIN BOX */
-#loginBox{
+/* POPUPS */
+.popup{
     display:none;
     position:fixed;
     top:50%;
@@ -83,7 +71,12 @@ button{
     background:#222;
     padding:20px;
     border-radius:8px;
-    width:250px;
+    width:300px;
+}
+
+iframe{
+    width:100%;
+    height:200px;
 }
 </style>
 </head>
@@ -92,137 +85,171 @@ button{
 
 <!-- NAVBAR -->
 <div class="navbar">
-    <div class="logo">Ansh Games</div>
-
+    <h2>Ansh Games</h2>
     <div id="authArea">
         <button onclick="showLogin()">Login</button>
     </div>
 </div>
 
-<!-- HERO -->
-<div class="hero">
-    <h1>Welcome to Ansh Games</h1>
-    <p>Explore and download popular games</p>
-</div>
-
 <!-- GAMES -->
 <div class="grid">
 
-    <div class="card">
-        <img src="fortnite.jpg">
-        <div class="card-content">
-            <h3>Fortnite</h3>
-            <button onclick="openGame('fortnite')">Download</button>
-        </div>
-    </div>
+<div class="card">
+<img src="fortnite.jpg">
+<div class="card-content">
+<h3>Fortnite</h3>
+<button onclick="openGame('fortnite')">Download</button>
+<button onclick="addFav('Fortnite')">❤️</button>
+<button onclick="showTrailer('https://www.youtube.com/embed/2gUtfBmw86Y')">🎥</button>
+</div>
+</div>
 
-    <div class="card">
-        <img src="gta.jpg">
-        <div class="card-content">
-            <h3>GTA V</h3>
-            <button onclick="openGame('gta')">Download</button>
-        </div>
-    </div>
+<div class="card">
+<img src="gta.jpg">
+<div class="card-content">
+<h3>GTA V</h3>
+<button onclick="openGame('gta')">Download</button>
+<button onclick="addFav('GTA V')">❤️</button>
+<button onclick="showTrailer('https://www.youtube.com/embed/QkkoHAzjnUs')">🎥</button>
+</div>
+</div>
 
-    <div class="card">
-        <img src="minecraft.jpg">
-        <div class="card-content">
-            <h3>Minecraft</h3>
-            <button onclick="openGame('minecraft')">Download</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <img src="valorant.jpg">
-        <div class="card-content">
-            <h3>Valorant</h3>
-            <button onclick="openGame('valorant')">Download</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <img src="cod.jpg">
-        <div class="card-content">
-            <h3>Call of Duty</h3>
-            <button onclick="openGame('cod')">Download</button>
-        </div>
-    </div>
-
-    <div class="card">
-        <img src="roblox.jpg">
-        <div class="card-content">
-            <h3>Roblox</h3>
-            <button onclick="openGame('roblox')">Download</button>
-        </div>
-    </div>
+<div class="card">
+<img src="minecraft.jpg">
+<div class="card-content">
+<h3>Minecraft</h3>
+<button onclick="openGame('minecraft')">Download</button>
+<button onclick="addFav('Minecraft')">❤️</button>
+<button onclick="showTrailer('https://www.youtube.com/embed/MmB9b5njVbA')">🎥</button>
+</div>
+</div>
 
 </div>
 
-<!-- LOGIN POPUP -->
-<div id="loginBox">
-    <h3>Login</h3>
+<!-- LOGIN -->
+<div class="popup" id="loginBox">
+<h3>Login</h3>
+<input id="username" placeholder="Username"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+<button onclick="login()">Login</button>
+<button onclick="signup()">Sign Up</button>
+<button onclick="closeLogin()">Close</button>
+</div>
 
-    <input id="username" placeholder="Username" style="width:100%"><br><br>
-    <input id="password" type="password" placeholder="Password" style="width:100%"><br><br>
+<!-- PROFILE -->
+<div class="popup" id="profileBox">
+<h3>Profile</h3>
+<p id="profileName"></p>
 
-    <button onclick="login()">Login</button>
-    <button onclick="signup()">Sign Up</button>
-    <button onclick="closeLogin()">Close</button>
+<h4>Favorite Games:</h4>
+<ul id="favList"></ul>
+
+<button onclick="closeProfile()">Close</button>
+</div>
+
+<!-- TRAILER -->
+<div class="popup" id="trailerBox">
+<iframe id="videoFrame" src=""></iframe><br>
+<button onclick="closeTrailer()">Close</button>
 </div>
 
 <script>
 
-// GAME LINKS
+/* LOAD USER ON REFRESH */
+window.onload = function(){
+    let user = localStorage.getItem("user");
+    if(user){
+        showUser(user);
+    }
+};
+
+/* SHOW USER */
+function showUser(user){
+    document.getElementById("authArea").innerHTML =
+    `<span>${user}</span>
+     <button onclick="openProfile()">Profile</button>
+     <button onclick="logout()">Logout</button>`;
+}
+
+/* LOGIN */
+function login(){
+    let user = username.value;
+    let pass = password.value;
+
+    if(user === localStorage.getItem("user") && pass === localStorage.getItem("pass")){
+        showUser(user);
+        closeLogin();
+    } else {
+        alert("Wrong details");
+    }
+}
+
+/* SIGNUP */
+function signup(){
+    localStorage.setItem("user", username.value);
+    localStorage.setItem("pass", password.value);
+    alert("Account created");
+}
+
+/* LOGOUT */
+function logout(){
+    localStorage.clear();
+    location.reload();
+}
+
+/* LOGIN UI */
+function showLogin(){ loginBox.style.display="block"; }
+function closeLogin(){ loginBox.style.display="none"; }
+
+/* GAME LINKS */
 function openGame(game){
     if(game==="fortnite") window.open("https://www.epicgames.com/fortnite");
     if(game==="gta") window.open("https://www.rockstargames.com/gta-v");
     if(game==="minecraft") window.open("https://www.minecraft.net");
-    if(game==="valorant") window.open("https://playvalorant.com");
-    if(game==="cod") window.open("https://www.callofduty.com");
-    if(game==="roblox") window.open("https://www.roblox.com");
 }
 
-// LOGIN UI
-function showLogin(){
-    document.getElementById("loginBox").style.display="block";
-}
+/* FAVORITES (NO DUPLICATES) */
+function addFav(game){
+    let favs = JSON.parse(localStorage.getItem("favs")) || [];
 
-function closeLogin(){
-    document.getElementById("loginBox").style.display="none";
-}
-
-// SIGNUP
-function signup(){
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
-
-    localStorage.setItem("user", user);
-    localStorage.setItem("pass", pass);
-
-    alert("Account created!");
-}
-
-// LOGIN
-function login(){
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
-
-    let savedUser = localStorage.getItem("user");
-    let savedPass = localStorage.getItem("pass");
-
-    if(user === savedUser && pass === savedPass){
-        document.getElementById("authArea").innerHTML =
-        `<span>Welcome ${user}</span> <button onclick="logout()">Logout</button>`;
-
-        closeLogin();
+    if(!favs.includes(game)){
+        favs.push(game);
+        localStorage.setItem("favs", JSON.stringify(favs));
+        alert("Added to favorites");
     } else {
-        alert("Wrong username or password!");
+        alert("Already added");
     }
 }
 
-// LOGOUT
-function logout(){
-    location.reload();
+/* PROFILE */
+function openProfile(){
+    let user = localStorage.getItem("user");
+    document.getElementById("profileName").innerText = user;
+
+    let favs = JSON.parse(localStorage.getItem("favs")) || [];
+    let list = document.getElementById("favList");
+    list.innerHTML = "";
+
+    favs.forEach(f=>{
+        list.innerHTML += "<li>"+f+"</li>";
+    });
+
+    profileBox.style.display="block";
+}
+
+function closeProfile(){
+    profileBox.style.display="none";
+}
+
+/* TRAILER */
+function showTrailer(link){
+    videoFrame.src = link;
+    trailerBox.style.display="block";
+}
+
+function closeTrailer(){
+    trailerBox.style.display="none";
+    videoFrame.src="";
 }
 
 </script>

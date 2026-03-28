@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ansh Games</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
@@ -14,6 +15,7 @@ body{
     color:white;
 }
 
+/* NAVBAR */
 .navbar{
     display:flex;
     justify-content:space-between;
@@ -27,35 +29,26 @@ body{
     font-weight:700;
 }
 
-.nav-links a{
-    color:white;
-    margin-left:25px;
-    text-decoration:none;
-}
-
-.nav-links a:hover{
-    color:#00ffcc;
-}
-
-.search{
-    padding:6px 10px;
+/* BUTTON */
+button{
+    padding:6px 12px;
+    background:#00ffcc;
     border:none;
+    cursor:pointer;
     border-radius:4px;
 }
 
+/* HERO */
 .hero{
     padding:60px;
-    background:linear-gradient(to right,#000,#1a1a1a);
 }
 
-.section{
-    padding:40px;
-}
-
+/* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
     gap:20px;
+    padding:40px;
 }
 
 .card{
@@ -80,122 +73,106 @@ body{
     padding:15px;
 }
 
-.card h3{
-    margin:0 0 10px;
-}
-
-.card button{
-    padding:8px 15px;
-    background:#00ffcc;
-    border:none;
-    cursor:pointer;
-    border-radius:4px;
-}
-
-.card button:hover{
-    background:white;
-    color:black;
-}
-
-.about{
-    padding:40px;
-    background:#181818;
-}
-
-.footer{
-    text-align:center;
+/* LOGIN BOX */
+#loginBox{
+    display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    background:#222;
     padding:20px;
-    background:#000;
-    color:#aaa;
+    border-radius:8px;
+    width:250px;
 }
 </style>
 </head>
 
 <body>
 
+<!-- NAVBAR -->
 <div class="navbar">
     <div class="logo">Ansh Games</div>
 
-    <input class="search" placeholder="Search games..." onkeyup="searchGames(this.value)">
-
-    <div class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#games">Games</a>
-        <a href="#about">About</a>
+    <div id="authArea">
+        <button onclick="showLogin()">Login</button>
     </div>
 </div>
 
-<div class="hero" id="home">
+<!-- HERO -->
+<div class="hero">
     <h1>Welcome to Ansh Games</h1>
     <p>Explore and download popular games</p>
 </div>
 
-<div class="section" id="games">
-    <h2>Popular Games</h2>
+<!-- GAMES -->
+<div class="grid">
 
-    <div class="grid">
-
-        <div class="card">
-            <img src="fortnite.jpg">
-            <div class="card-content">
-                <h3>Fortnite</h3>
-                <button onclick="openGame('fortnite')">Download</button>
-            </div>
+    <div class="card">
+        <img src="fortnite.jpg">
+        <div class="card-content">
+            <h3>Fortnite</h3>
+            <button onclick="openGame('fortnite')">Download</button>
         </div>
-
-        <div class="card">
-            <img src="gta.jpg">
-            <div class="card-content">
-                <h3>GTA V</h3>
-                <button onclick="openGame('gta')">Download</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="minecraft.jpg">
-            <div class="card-content">
-                <h3>Minecraft</h3>
-                <button onclick="openGame('minecraft')">Download</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="valorant.jpg">
-            <div class="card-content">
-                <h3>Valorant</h3>
-                <button onclick="openGame('valorant')">Download</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="cod.jpg">
-            <div class="card-content">
-                <h3>Call of Duty</h3>
-                <button onclick="openGame('cod')">Download</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="roblox.jpg">
-            <div class="card-content">
-                <h3>Roblox</h3>
-                <button onclick="openGame('roblox')">Download</button>
-            </div>
-        </div>
-
     </div>
+
+    <div class="card">
+        <img src="gta.jpg">
+        <div class="card-content">
+            <h3>GTA V</h3>
+            <button onclick="openGame('gta')">Download</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="minecraft.jpg">
+        <div class="card-content">
+            <h3>Minecraft</h3>
+            <button onclick="openGame('minecraft')">Download</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="valorant.jpg">
+        <div class="card-content">
+            <h3>Valorant</h3>
+            <button onclick="openGame('valorant')">Download</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="cod.jpg">
+        <div class="card-content">
+            <h3>Call of Duty</h3>
+            <button onclick="openGame('cod')">Download</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="roblox.jpg">
+        <div class="card-content">
+            <h3>Roblox</h3>
+            <button onclick="openGame('roblox')">Download</button>
+        </div>
+    </div>
+
 </div>
 
-<div class="about" id="about">
-    <h2>About</h2>
-    <p>Ansh Games is your gaming hub to explore popular games.</p>
-</div>
+<!-- LOGIN POPUP -->
+<div id="loginBox">
+    <h3>Login</h3>
 
-<div class="footer">
-    © 2026 Ansh Games
+    <input id="username" placeholder="Username" style="width:100%"><br><br>
+    <input id="password" type="password" placeholder="Password" style="width:100%"><br><br>
+
+    <button onclick="login()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+    <button onclick="closeLogin()">Close</button>
 </div>
 
 <script>
+
+// GAME LINKS
 function openGame(game){
     if(game==="fortnite") window.open("https://www.epicgames.com/fortnite");
     if(game==="gta") window.open("https://www.rockstargames.com/gta-v");
@@ -205,15 +182,49 @@ function openGame(game){
     if(game==="roblox") window.open("https://www.roblox.com");
 }
 
-function searchGames(input){
-    let cards=document.querySelectorAll(".card");
-    input=input.toLowerCase();
-
-    cards.forEach(card=>{
-        let text=card.innerText.toLowerCase();
-        card.style.display=text.includes(input)?"block":"none";
-    });
+// LOGIN UI
+function showLogin(){
+    document.getElementById("loginBox").style.display="block";
 }
+
+function closeLogin(){
+    document.getElementById("loginBox").style.display="none";
+}
+
+// SIGNUP
+function signup(){
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    localStorage.setItem("user", user);
+    localStorage.setItem("pass", pass);
+
+    alert("Account created!");
+}
+
+// LOGIN
+function login(){
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    let savedUser = localStorage.getItem("user");
+    let savedPass = localStorage.getItem("pass");
+
+    if(user === savedUser && pass === savedPass){
+        document.getElementById("authArea").innerHTML =
+        `<span>Welcome ${user}</span> <button onclick="logout()">Logout</button>`;
+
+        closeLogin();
+    } else {
+        alert("Wrong username or password!");
+    }
+}
+
+// LOGOUT
+function logout(){
+    location.reload();
+}
+
 </script>
 
 </body>

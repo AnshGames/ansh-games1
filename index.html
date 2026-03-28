@@ -1,347 +1,197 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ansh Games</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-<style>
-body{
-    margin:0;
-    font-family:'Poppins',sans-serif;
-    background:#0f0f0f;
-    color:white;
-}
-
-/* NAVBAR */
-.navbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 40px;
-    background:#000;
-}
-
-.nav-links a{
-    margin-left:20px;
-    color:white;
-    text-decoration:none;
-}
-
-.nav-links a:hover{
-    color:#00ffcc;
-}
-
-button{
-    background:#00ffcc;
-    border:none;
-    padding:6px 12px;
-    cursor:pointer;
-    border-radius:4px;
-}
-
-/* SEARCH */
-#searchInput{
-    padding:6px;
-    border-radius:4px;
-    border:none;
-}
-
-/* HERO */
-.hero{
-    text-align:center;
-    padding:80px 20px;
-    background:linear-gradient(to right,#000,#1a1a1a);
-}
-
-.hero h1{
-    font-size:40px;
-}
-
-.section{
-    padding:40px;
-}
-
-/* GRID */
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
-}
-
-.card{
-    background:#1e1e1e;
-    border-radius:8px;
-    overflow:hidden;
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:scale(1.05);
-}
-
-.card img{
-    width:100%;
-    height:180px;
-    object-fit:cover;
-}
-
-.card-content{
-    padding:15px;
-}
-
-/* POPUPS */
-.popup{
-    display:none;
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    background:#222;
-    padding:20px;
-    border-radius:8px;
-    width:300px;
-}
-
-iframe{
-    width:100%;
-    height:200px;
-}
-
-/* FOOTER */
-footer{
-    text-align:center;
-    padding:20px;
-    background:#000;
-    margin-top:40px;
-}
-
-footer span{
-    font-weight:bold;
-    border-radius:50%;
-    padding:4px 10px;
-    border:1px solid #00ffcc;
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ansh Games</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f0f0f0; scroll-behavior: smooth; }
+    header { background: #222; color: #fff; padding: 15px; display:flex; justify-content: space-between; align-items:center; position:sticky; top:0; z-index:1000; }
+    header a { color:#fff; margin:0 10px; text-decoration:none; font-weight:bold; }
+    header a.active { text-decoration: underline; color:#ff6347; }
+    section { padding: 50px 20px; max-width:1200px; margin:auto; min-height: 70vh; }
+    h1,h2,h3,h4 { margin: 10px 0; }
+    .games { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:20px; }
+    .game { border: 1px solid #ccc; padding: 10px; border-radius:8px; text-align:center; background:#fff; }
+    footer { text-align:center; padding:20px; background:#222; color:#fff; margin-top:20px; }
+    input[type="text"], input[type="password"] { padding:5px; width:200px; margin:5px 0; }
+    button { padding:5px 10px; cursor:pointer; margin:5px 2px; border:none; border-radius:5px; background:#222; color:#fff; }
+    button:hover { background:#555; }
+    .hidden { display:none; }
+    #trailerModal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; justify-content:center; align-items:center; }
+    #trailerModal div { background:#fff; padding:20px; border-radius:10px; max-width:500px; width:90%; text-align:center; }
+  </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
-    <div>
-        <strong>Ansh Games</strong>
-        <span class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#games">Games</a>
-        </span>
+<header>
+  <div>
+    <a href="#home" class="nav-link">🏠 Home</a>
+    <a href="#about" class="nav-link">ℹ️ About</a>
+    <a href="#games" class="nav-link">🎮 Games</a>
+    <a href="#profile" class="nav-link">👤 Profile</a>
+  </div>
+  <div>
+    <input type="text" id="searchBar" placeholder="🔎 Search games...">
+  </div>
+</header>
+
+<!-- Home Section -->
+<section id="home">
+  <h1>Welcome to Ansh Games!</h1>
+  <p>Play your favorite games and watch trailers. Save your favorites and enjoy gaming!</p>
+</section>
+
+<!-- About Section -->
+<section id="about">
+  <h2>About Ansh Games</h2>
+  <p>Ansh Games is your ultimate destination to explore popular games like Fortnite, COD, Minecraft, GTA, Roblox, and Valorant. Watch trailers, mark favorites, and enjoy gaming anytime!</p>
+</section>
+
+<!-- Games Section -->
+<section id="games">
+  <h2>🎮 Games</h2>
+  <div class="games" id="gameList">
+    <div class="game" data-name="Fortnite">
+      <img src="https://raw.githubusercontent.com/anshgames/ansh-games1/main/fortnite.jpg" alt="Fortnite" style="width:100%; border-radius:8px;">
+      <h3>Fortnite</h3>
+      <button onclick="addFavorite('Fortnite')">❤️ Favorite</button>
+      <button onclick="watchTrailer('Fortnite')">🎥 Trailer</button>
     </div>
-    <div>
-        <input type="text" id="searchInput" placeholder="Search games..." onkeyup="searchGames()">
-        <span id="authArea">
-            <button onclick="showLogin()">Login</button>
-        </span>
+    <div class="game" data-name="COD">
+      <img src="https://raw.githubusercontent.com/anshgames/ansh-games1/main/cod.jpg" alt="COD" style="width:100%; border-radius:8px;">
+      <h3>COD</h3>
+      <button onclick="addFavorite('COD')">❤️ Favorite</button>
+      <button onclick="watchTrailer('COD')">🎥 Trailer</button>
     </div>
+    <div class="game" data-name="Minecraft">
+      <img src="https://raw.githubusercontent.com/anshgames/ansh-games1/main/minecraft.jpg" alt="Minecraft" style="width:100%; border-radius:8px;">
+      <h3>Minecraft</h3>
+      <button onclick="addFavorite('Minecraft')">❤️ Favorite</button>
+      <button onclick="watchTrailer('Minecraft')">🎥 Trailer</button>
+    </div>
+    <div class="game" data-name="GTA">
+      <img src="https://raw.githubusercontent.com/anshgames/ansh-games1/main/gta.jpg" alt="GTA" style="width:100%; border-radius:8px;">
+      <h3>GTA</h3>
+      <button onclick="addFavorite('GTA')">❤️ Favorite</button>
+      <button onclick="watchTrailer('GTA')">🎥 Trailer</button>
+    </div>
+    <div class="game" data-name="Roblox">
+      <img src="https://raw.githubusercontent.com/anshgames/ansh-games1/main/roblox.jpg" alt="Roblox" style="width:100%; border-radius:8px;">
+      <h3>Roblox</h3>
+      <button onclick="addFavorite('Roblox')">❤️ Favorite</button>
+      <button onclick="watchTrailer('Roblox')">🎥 Trailer</button>
+    </div>
+    <div class="game" data-name="Valorant">
+      <img src="https://raw.githubusercontent.com/anshgames/ansh-games1/main/valorant.jpg" alt="Valorant" style="width:100%; border-radius:8px;">
+      <h3>Valorant</h3>
+      <button onclick="addFavorite('Valorant')">❤️ Favorite</button>
+      <button onclick="watchTrailer('Valorant')">🎥 Trailer</button>
+    </div>
+  </div>
+</section>
+
+<!-- Profile Section -->
+<section id="profile">
+  <h2>👤 Profile</h2>
+  <div id="loginSection">
+    <h3>Login</h3>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button onclick="login()">🔐 Login</button>
+  </div>
+  <div id="userProfile" class="hidden">
+    <h3>Welcome, <span id="userNameDisplay"></span>!</h3>
+    <h4>❤️ Favorite Games:</h4>
+    <ul id="favoriteList"></ul>
+  </div>
+</section>
+
+<!-- Trailer Modal -->
+<div id="trailerModal" class="hidden">
+  <div>
+    <h3 id="trailerTitle"></h3>
+    <p>Trailer coming soon!</p>
+    <button onclick="closeTrailer()">Close</button>
+  </div>
 </div>
 
-<!-- HERO / HOME -->
-<div class="hero" id="home">
-    <h1>Welcome to Ansh Games</h1>
-    <p>Explore, download and enjoy your favorite games</p>
-</div>
-
-<!-- ABOUT -->
-<div class="section" id="about">
-<h2>About Ansh Games</h2>
-<p>Ansh Games is a mini gaming platform where you can explore popular games, watch trailers, save favorites, and manage your profile. Enjoy your gaming experience!</p>
-</div>
-
-<!-- GAMES -->
-<div class="section" id="games">
-<h2>Popular Games</h2>
-<div class="grid" id="gameGrid">
-
-<div class="card">
-<img src="fortnite.jpg">
-<div class="card-content">
-<h3>Fortnite</h3>
-<button onclick="openGame('fortnite')">Download</button>
-<button onclick="addFav('Fortnite')">❤️</button>
-<button onclick="showTrailer('https://www.youtube.com/embed/2gUtfBmw86Y')">🎥</button>
-</div>
-</div>
-
-<div class="card">
-<img src="gta.jpg">
-<div class="card-content">
-<h3>GTA V</h3>
-<button onclick="openGame('gta')">Download</button>
-<button onclick="addFav('GTA V')">❤️</button>
-<button onclick="showTrailer('https://www.youtube.com/embed/QkkoHAzjnUs')">🎥</button>
-</div>
-</div>
-
-<div class="card">
-<img src="minecraft.jpg">
-<div class="card-content">
-<h3>Minecraft</h3>
-<button onclick="openGame('minecraft')">Download</button>
-<button onclick="addFav('Minecraft')">❤️</button>
-<button onclick="showTrailer('https://www.youtube.com/embed/MmB9b5njVbA')">🎥</button>
-</div>
-</div>
-
-<div class="card">
-<img src="valorant.jpg">
-<div class="card-content">
-<h3>Valorant</h3>
-<button onclick="openGame('valorant')">Download</button>
-<button onclick="addFav('Valorant')">❤️</button>
-<button onclick="showTrailer('https://www.youtube.com/embed/e_E9W2vsRbQ')">🎥</button>
-</div>
-</div>
-
-<div class="card">
-<img src="cod.jpg">
-<div class="card-content">
-<h3>Call of Duty</h3>
-<button onclick="openGame('cod')">Download</button>
-<button onclick="addFav('Call of Duty')">❤️</button>
-<button onclick="showTrailer('https://www.youtube.com/embed/bH1lHCirCGI')">🎥</button>
-</div>
-</div>
-
-<div class="card">
-<img src="roblox.jpg">
-<div class="card-content">
-<h3>Roblox</h3>
-<button onclick="openGame('roblox')">Download</button>
-<button onclick="addFav('Roblox')">❤️</button>
-<button onclick="showTrailer('https://www.youtube.com/embed/sme76Wo5T0U')">🎥</button>
-</div>
-</div>
-
-</div>
-</div>
-
-<!-- LOGIN POPUP -->
-<div class="popup" id="loginBox">
-<h3>Login</h3>
-<input id="username" placeholder="Username"><br><br>
-<input id="password" type="password" placeholder="Password"><br><br>
-<button onclick="login()">Login</button>
-<button onclick="signup()">Sign Up</button>
-<button onclick="closeLogin()">Close</button>
-</div>
-
-<!-- PROFILE POPUP -->
-<div class="popup" id="profileBox">
-<h3>Profile</h3>
-<p id="profileName"></p>
-<h4>Favorites:</h4>
-<ul id="favList"></ul>
-<button onclick="closeProfile()">Close</button>
-</div>
-
-<!-- TRAILER POPUP -->
-<div class="popup" id="trailerBox">
-<iframe id="videoFrame"></iframe><br>
-<button onclick="closeTrailer()">Close</button>
-</div>
-
-<!-- FOOTER -->
 <footer>
-<span>©</span> Ansh Games
+  © Ansh Games
 </footer>
 
 <script>
-// LOAD USER
-window.onload=function(){
-    let user=localStorage.getItem("user");
-    if(user) showUser(user);
-}
+  // Smooth Scroll & Active Menu
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('section');
 
-// SHOW USER
-function showUser(user){
-    authArea.innerHTML=
-    `${user} <button onclick="openProfile()">Profile</button> <button onclick="logout()">Logout</button>`;
-}
-
-// LOGIN
-function login(){
-    if(username.value===localStorage.getItem("user") && password.value===localStorage.getItem("pass")){
-        showUser(username.value);
-        closeLogin();
-    } else alert("Wrong details");
-}
-
-// SIGNUP
-function signup(){
-    localStorage.setItem("user",username.value);
-    localStorage.setItem("pass",password.value);
-    alert("Account created");
-}
-
-// LOGOUT
-function logout(){
-    localStorage.clear();
-    location.reload();
-}
-
-// LOGIN POPUP
-function showLogin(){loginBox.style.display="block";}
-function closeLogin(){loginBox.style.display="none";}
-
-// OPEN GAME LINKS
-function openGame(game){
-    if(game==="fortnite") window.open("https://www.epicgames.com/fortnite");
-    if(game==="gta") window.open("https://www.rockstargames.com/gta-v");
-    if(game==="minecraft") window.open("https://www.minecraft.net");
-    if(game==="valorant") window.open("https://playvalorant.com");
-    if(game==="cod") window.open("https://www.callofduty.com");
-    if(game==="roblox") window.open("https://www.roblox.com");
-}
-
-// FAVORITES
-function addFav(game){
-    let favs=JSON.parse(localStorage.getItem("favs"))||[];
-    if(!favs.includes(game)){
-        favs.push(game);
-        localStorage.setItem("favs",JSON.stringify(favs));
-        alert("Added to favorites");
-    } else alert("Already added");
-}
-
-// PROFILE POPUP
-function openProfile(){
-    profileName.innerText=localStorage.getItem("user");
-    let favs=JSON.parse(localStorage.getItem("favs"))||[];
-    favList.innerHTML="";
-    favs.forEach(f=>favList.innerHTML+="<li>"+f+"</li>");
-    profileBox.style.display="block";
-}
-function closeProfile(){profileBox.style.display="none";}
-
-// TRAILER POPUP
-function showTrailer(link){
-    videoFrame.src=link;
-    trailerBox.style.display="block";
-}
-function closeTrailer(){
-    trailerBox.style.display="none";
-    videoFrame.src="";
-}
-
-// SEARCH
-function searchGames(){
-    let input=document.getElementById("searchInput").value.toLowerCase();
-    let cards=document.querySelectorAll("#gameGrid .card");
-    cards.forEach(card=>{
-        let name=card.querySelector("h3").innerText.toLowerCase();
-        card.style.display=name.includes(input)?"block":"none";
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 70;
+      if(scrollY >= sectionTop) current = section.getAttribute('id');
     });
-}
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if(link.getAttribute('href') === '#' + current) link.classList.add('active');
+    });
+  });
+
+  // Search Function
+  const searchBar = document.getElementById('searchBar');
+  const games = document.querySelectorAll('.game');
+
+  searchBar.addEventListener('input', () => {
+    const query = searchBar.value.toLowerCase();
+    games.forEach(game => {
+      game.style.display = game.dataset.name.toLowerCase().includes(query) ? 'block' : 'none';
+    });
+  });
+
+  // Login System
+  function login() {
+    const username = document.getElementById('username').value;
+    if(username) {
+      document.getElementById('loginSection').classList.add('hidden');
+      document.getElementById('userProfile').classList.remove('hidden');
+      document.getElementById('userNameDisplay').innerText = username;
+    } else {
+      alert('Please enter username');
+    }
+  }
+
+  // Favorite Games
+  const favoriteList = document.getElementById('favoriteList');
+  const favorites = [];
+
+  function addFavorite(gameName) {
+    if(!favorites.includes(gameName)) {
+      favorites.push(gameName);
+      updateFavorites();
+    }
+  }
+
+  function updateFavorites() {
+    favoriteList.innerHTML = '';
+    favorites.forEach(game => {
+      const li = document.createElement('li');
+      li.textContent = game;
+      favoriteList.appendChild(li);
+    });
+  }
+
+  // Trailer Modal
+  const trailerModal = document.getElementById('trailerModal');
+  const trailerTitle = document.getElementById('trailerTitle');
+
+  function watchTrailer(gameName) {
+    trailerTitle.textContent = gameName + " Trailer";
+    trailerModal.classList.remove('hidden');
+  }
+
+  function closeTrailer() {
+    trailerModal.classList.add('hidden');
+  }
 </script>
 
 </body>

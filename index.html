@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ansh Games</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
 <style>
 body{
     margin:0;
@@ -19,9 +17,19 @@ body{
 .navbar{
     display:flex;
     justify-content:space-between;
+    align-items:center;
     padding:15px 40px;
     background:#000;
-    align-items:center;
+}
+
+.nav-links a{
+    margin-left:20px;
+    color:white;
+    text-decoration:none;
+}
+
+.nav-links a:hover{
+    color:#00ffcc;
 }
 
 button{
@@ -32,12 +40,33 @@ button{
     border-radius:4px;
 }
 
+/* SEARCH */
+#searchInput{
+    padding:6px;
+    border-radius:4px;
+    border:none;
+}
+
+/* HERO */
+.hero{
+    text-align:center;
+    padding:80px 20px;
+    background:linear-gradient(to right,#000,#1a1a1a);
+}
+
+.hero h1{
+    font-size:40px;
+}
+
+.section{
+    padding:40px;
+}
+
 /* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
     gap:20px;
-    padding:40px;
 }
 
 .card{
@@ -78,21 +107,60 @@ iframe{
     width:100%;
     height:200px;
 }
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:20px;
+    background:#000;
+    margin-top:40px;
+}
+
+footer span{
+    font-weight:bold;
+    border-radius:50%;
+    padding:4px 10px;
+    border:1px solid #00ffcc;
+}
+
 </style>
 </head>
-
 <body>
 
 <!-- NAVBAR -->
 <div class="navbar">
-    <h2>Ansh Games</h2>
-    <div id="authArea">
-        <button onclick="showLogin()">Login</button>
+    <div>
+        <strong>Ansh Games</strong>
+        <span class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#games">Games</a>
+        </span>
+    </div>
+    <div>
+        <input type="text" id="searchInput" placeholder="Search games..." onkeyup="searchGames()">
+        <span id="authArea">
+            <button onclick="showLogin()">Login</button>
+        </span>
     </div>
 </div>
 
+<!-- HERO / HOME -->
+<div class="hero" id="home">
+    <h1>Welcome to Ansh Games</h1>
+    <p>Explore, download and enjoy your favorite games</p>
+</div>
+
+<!-- ABOUT -->
+<div class="section" id="about">
+<h2>About Ansh Games</h2>
+<p>Ansh Games is a mini gaming platform where you can explore popular games, watch trailers, save favorites, and manage your profile. Enjoy your gaming experience!</p>
+</div>
+
 <!-- GAMES -->
-<div class="grid">
+<div class="section" id="games">
+<h2>Popular Games</h2>
+<div class="grid" id="gameGrid">
 
 <div class="card">
 <img src="fortnite.jpg">
@@ -124,9 +192,40 @@ iframe{
 </div>
 </div>
 
+<div class="card">
+<img src="valorant.jpg">
+<div class="card-content">
+<h3>Valorant</h3>
+<button onclick="openGame('valorant')">Download</button>
+<button onclick="addFav('Valorant')">❤️</button>
+<button onclick="showTrailer('https://www.youtube.com/embed/e_E9W2vsRbQ')">🎥</button>
+</div>
 </div>
 
-<!-- LOGIN -->
+<div class="card">
+<img src="cod.jpg">
+<div class="card-content">
+<h3>Call of Duty</h3>
+<button onclick="openGame('cod')">Download</button>
+<button onclick="addFav('Call of Duty')">❤️</button>
+<button onclick="showTrailer('https://www.youtube.com/embed/bH1lHCirCGI')">🎥</button>
+</div>
+</div>
+
+<div class="card">
+<img src="roblox.jpg">
+<div class="card-content">
+<h3>Roblox</h3>
+<button onclick="openGame('roblox')">Download</button>
+<button onclick="addFav('Roblox')">❤️</button>
+<button onclick="showTrailer('https://www.youtube.com/embed/sme76Wo5T0U')">🎥</button>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- LOGIN POPUP -->
 <div class="popup" id="loginBox">
 <h3>Login</h3>
 <input id="username" placeholder="Username"><br><br>
@@ -136,122 +235,113 @@ iframe{
 <button onclick="closeLogin()">Close</button>
 </div>
 
-<!-- PROFILE -->
+<!-- PROFILE POPUP -->
 <div class="popup" id="profileBox">
 <h3>Profile</h3>
 <p id="profileName"></p>
-
-<h4>Favorite Games:</h4>
+<h4>Favorites:</h4>
 <ul id="favList"></ul>
-
 <button onclick="closeProfile()">Close</button>
 </div>
 
-<!-- TRAILER -->
+<!-- TRAILER POPUP -->
 <div class="popup" id="trailerBox">
-<iframe id="videoFrame" src=""></iframe><br>
+<iframe id="videoFrame"></iframe><br>
 <button onclick="closeTrailer()">Close</button>
 </div>
 
+<!-- FOOTER -->
+<footer>
+<span>©</span> Ansh Games
+</footer>
+
 <script>
+// LOAD USER
+window.onload=function(){
+    let user=localStorage.getItem("user");
+    if(user) showUser(user);
+}
 
-/* LOAD USER ON REFRESH */
-window.onload = function(){
-    let user = localStorage.getItem("user");
-    if(user){
-        showUser(user);
-    }
-};
-
-/* SHOW USER */
+// SHOW USER
 function showUser(user){
-    document.getElementById("authArea").innerHTML =
-    `<span>${user}</span>
-     <button onclick="openProfile()">Profile</button>
-     <button onclick="logout()">Logout</button>`;
+    authArea.innerHTML=
+    `${user} <button onclick="openProfile()">Profile</button> <button onclick="logout()">Logout</button>`;
 }
 
-/* LOGIN */
+// LOGIN
 function login(){
-    let user = username.value;
-    let pass = password.value;
-
-    if(user === localStorage.getItem("user") && pass === localStorage.getItem("pass")){
-        showUser(user);
+    if(username.value===localStorage.getItem("user") && password.value===localStorage.getItem("pass")){
+        showUser(username.value);
         closeLogin();
-    } else {
-        alert("Wrong details");
-    }
+    } else alert("Wrong details");
 }
 
-/* SIGNUP */
+// SIGNUP
 function signup(){
-    localStorage.setItem("user", username.value);
-    localStorage.setItem("pass", password.value);
+    localStorage.setItem("user",username.value);
+    localStorage.setItem("pass",password.value);
     alert("Account created");
 }
 
-/* LOGOUT */
+// LOGOUT
 function logout(){
     localStorage.clear();
     location.reload();
 }
 
-/* LOGIN UI */
-function showLogin(){ loginBox.style.display="block"; }
-function closeLogin(){ loginBox.style.display="none"; }
+// LOGIN POPUP
+function showLogin(){loginBox.style.display="block";}
+function closeLogin(){loginBox.style.display="none";}
 
-/* GAME LINKS */
+// OPEN GAME LINKS
 function openGame(game){
     if(game==="fortnite") window.open("https://www.epicgames.com/fortnite");
     if(game==="gta") window.open("https://www.rockstargames.com/gta-v");
     if(game==="minecraft") window.open("https://www.minecraft.net");
+    if(game==="valorant") window.open("https://playvalorant.com");
+    if(game==="cod") window.open("https://www.callofduty.com");
+    if(game==="roblox") window.open("https://www.roblox.com");
 }
 
-/* FAVORITES (NO DUPLICATES) */
+// FAVORITES
 function addFav(game){
-    let favs = JSON.parse(localStorage.getItem("favs")) || [];
-
+    let favs=JSON.parse(localStorage.getItem("favs"))||[];
     if(!favs.includes(game)){
         favs.push(game);
-        localStorage.setItem("favs", JSON.stringify(favs));
+        localStorage.setItem("favs",JSON.stringify(favs));
         alert("Added to favorites");
-    } else {
-        alert("Already added");
-    }
+    } else alert("Already added");
 }
 
-/* PROFILE */
+// PROFILE POPUP
 function openProfile(){
-    let user = localStorage.getItem("user");
-    document.getElementById("profileName").innerText = user;
-
-    let favs = JSON.parse(localStorage.getItem("favs")) || [];
-    let list = document.getElementById("favList");
-    list.innerHTML = "";
-
-    favs.forEach(f=>{
-        list.innerHTML += "<li>"+f+"</li>";
-    });
-
+    profileName.innerText=localStorage.getItem("user");
+    let favs=JSON.parse(localStorage.getItem("favs"))||[];
+    favList.innerHTML="";
+    favs.forEach(f=>favList.innerHTML+="<li>"+f+"</li>");
     profileBox.style.display="block";
 }
+function closeProfile(){profileBox.style.display="none";}
 
-function closeProfile(){
-    profileBox.style.display="none";
-}
-
-/* TRAILER */
+// TRAILER POPUP
 function showTrailer(link){
-    videoFrame.src = link;
+    videoFrame.src=link;
     trailerBox.style.display="block";
 }
-
 function closeTrailer(){
     trailerBox.style.display="none";
     videoFrame.src="";
 }
 
+// SEARCH
+function searchGames(){
+    let input=document.getElementById("searchInput").value.toLowerCase();
+    let cards=document.querySelectorAll("#gameGrid .card");
+    cards.forEach(card=>{
+        let name=card.querySelector("h3").innerText.toLowerCase();
+        card.style.display=name.includes(input)?"block":"none";
+    });
+}
 </script>
 
 </body>
